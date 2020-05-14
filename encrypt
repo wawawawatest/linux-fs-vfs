@@ -1,0 +1,46 @@
+include<aes.h>
+int xbuf_encrypt(char* buf, int len)//加密,
+{
+    int i,j,tlen = len; 
+    char temp[16];
+    char* buff = buf;
+    memset(temp, 0 , sizeof(temp));
+    while(tlen%16)
+    {
+        buf[tlen] = 0xffffffdd;
+        tlen++;
+    }
+    buf[tlen] = '\0';
+    for (i = 0;i < tlen ;i += 16)
+    {
+		EncryptDataToCipherTxt(buff, temp, 16);
+        for (j = 0;j < 16 ;j++)
+        	buff[j] = temp[j];
+		buff += 16;
+    }
+    return tlen;
+}
+int xbuf_decrypt(char* buf, int len)//解密
+{
+    int i, j;
+    char temp[16];
+    char* buff = buf;
+    memset(temp, 0 , sizeof(temp));
+    for (i = 0;i < len ;i+=16)
+    {
+    	DecryptCipherTxtToData(buff, temp, 16);
+    	for (j = 0;j < 16 ;j++)
+	{
+        	buff[j] = temp[j];
+	}
+	buff += 16;
+    }
+    j = 15 ;
+    buff -= 16;
+    while(buff[j] == 0xffffffdd)
+    {
+	    buff[j] = 0x00;
+	    j--;
+    }
+    return 0;
+}
