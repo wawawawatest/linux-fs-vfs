@@ -1,4 +1,19 @@
+#include <linux/version.h>
+#include <linux/kernel.h>
+#include <linux/init.h>
+#include <linux/string.h>
+#include <linux/seq_file.h>
+#include <linux/parser.h>
+#include <linux/module.h>
+#include <linux/pagemap.h> 
+#include <linux/fs.h> 
+#include <linux/slab.h>
+#include <linux/statfs.h>
 
+#include <linux/kobject.h>
+#include <linux/sysfs.h>
+
+static DEFINE_RWLOCK(file_systems_lock);
 static struct file_system_type testfs_type = {
     .name       = "testfs",
     .mount      = testfs_get_super,
@@ -10,7 +25,7 @@ static struct file_system_type testfs_type = {
 static int __init test_init(void)
 {
         int retval;
-        exclude_kobj = kobject_create_and_add("nullfs", fs_kobj);
+        exclude_kobj = kobject_create_and_add("test", fs_kobj);
         if (!exclude_kobj)
                 return -ENOMEM;
 
