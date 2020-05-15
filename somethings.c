@@ -45,3 +45,6 @@ static void __exit test_exit(void)
 
 module_init(test_init);
 module_exit(test_exit);
+
+
+//open.c和read_wrire.c   拷贝出加密算法内置加密方式。
